@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GADRI Maryam — Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f2ee;
+    --ink: #1a1814;
+    --muted: #7a756e;
+    --accent: #c8563a;
+    --line: rgba(26,24,20,0.1);
+    --serif: 'Playfair Display', Georgia, serif;
+    --sans: 'DM Sans', sans-serif;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  html { scroll-behavior:smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-weight: 300;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE TEXTURE overlay ── */
+  body::before {
+    content:'';
+    position:fixed; inset:0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events:none; z-index:1000;
+    opacity:0.5;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top:0; left:0; right:0; z-index:100;
+    padding: 28px 56px;
+    display: flex; justify-content:space-between; align-items:center;
+    mix-blend-mode: multiply;
+  }
+  .logo {
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    letter-spacing: 0.02em;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .logo em { font-style: italic; color: var(--accent); }
+  .nav-links { display:flex; gap:36px; list-style:none; }
+  .nav-links a {
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--ink); }
+
+  /* ── SECTIONS ── */
+  section { padding: 120px 56px; max-width: 1100px; margin: 0 auto; }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: flex; flex-direction:column; justify-content:center;
+    padding-top: 140px;
+    position: relative;
+  }
+  .hero-eyebrow {
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 28px;
+    opacity: 0;
+    animation: fadeUp 0.9s 0.2s forwards;
+  }
+  .hero-name {
+    font-family: var(--serif);
+    font-size: clamp(4rem, 9vw, 8.5rem);
+    font-weight: 700;
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    margin-bottom: 32px;
+    opacity: 0;
+    animation: fadeUp 0.9s 0.4s forwards;
+  }
+  .hero-name em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--accent);
+  }
+  .hero-sub {
+    max-width: 480px;
+    font-size: 1rem;
+    color: var(--muted);
+    line-height: 1.75;
+    margin-bottom: 56px;
+    opacity: 0;
+    animation: fadeUp 0.9s 0.6s forwards;
+  }
+  .hero-actions {
+    display: flex; gap:20px; align-items:center;
+    opacity:0; animation: fadeUp 0.9s 0.8s forwards;
+  }
+  .btn-primary {
+    font-size: 0.78rem; font-weight:500; letter-spacing:0.08em; text-transform:uppercase;
+    padding: 16px 36px;
+    background: var(--ink); color: var(--bg);
+    text-decoration:none;
+    transition: background 0.25s, transform 0.2s;
+    display:inline-block;
+  }
+  .btn-primary:hover { background: var(--accent); transform:translateY(-2px); }
+  .btn-ghost {
+    font-size: 0.78rem; font-weight:500; letter-spacing:0.08em; text-transform:uppercase;
+    color: var(--muted); text-decoration:none;
+    display:inline-flex; align-items:center; gap:8px;
+    transition: color 0.2s, gap 0.2s;
+  }
+  .btn-ghost:hover { color:var(--ink); gap:14px; }
+
+  /* Decorative line */
+  .hero-line {
+    position:absolute; right:56px; top:50%;
+    width:1px; height:180px; background:var(--line);
+    transform:translateY(-50%);
+    opacity:0; animation: fadeIn 1s 1.2s forwards;
+  }
+  .hero-line::after {
+    content:''; position:absolute; top:0; left:0;
+    width:1px; height:60px;
+    background:var(--accent);
+    animation: lineSlide 2s 1.5s ease-in-out infinite alternate;
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    width:100%; max-width:1100px; margin:0 auto;
+    height:1px; background:var(--line);
+  }
+
+  /* ── ABOUT ── */
+  #about { display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:start; }
+  .about-left .section-num {
+    font-size:0.65rem; letter-spacing:0.25em; text-transform:uppercase;
+    color:var(--accent); margin-bottom:20px;
+  }
+  .section-title {
+    font-family:var(--serif); font-size:clamp(2rem,4vw,3.2rem);
+    font-weight:700; line-height:1.1; letter-spacing:-0.01em;
+    margin-bottom:0;
+  }
+  .section-title em { font-style:italic; font-weight:400; }
+  .about-right { padding-top:20px; }
+  .about-right p { color:var(--muted); margin-bottom:20px; font-size:0.95rem; line-height:1.8; }
+  .about-stats { display:flex; gap:48px; margin-top:48px; padding-top:32px; border-top:1px solid var(--line); }
+  .stat-val {
+    font-family:var(--serif); font-size:2.8rem; font-weight:700;
+    color:var(--ink); line-height:1;
+  }
+  .stat-val em { font-style:italic; color:var(--accent); }
+  .stat-key { font-size:0.72rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--muted); margin-top:6px; }
+
+  /* ── SKILLS ── */
+  #skills { padding-top:80px; padding-bottom:120px; }
+  .skills-header { display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:56px; }
+  .skills-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; }
+  .skill-cell {
+    background: rgba(26,24,20,0.04); padding:36px 32px;
+    border:1px solid var(--line);
+    transition: background 0.3s, border-color 0.3s;
+  }
+  .skill-cell:hover { background:rgba(200,86,58,0.06); border-color:rgba(200,86,58,0.3); }
+  .skill-cell-title {
+    font-family:var(--serif); font-size:1.1rem; font-style:italic;
+    margin-bottom:20px; color:var(--ink);
+  }
+  .skill-list { list-style:none; }
+  .skill-list li {
+    font-size:0.82rem; color:var(--muted); padding:7px 0;
+    border-bottom:1px solid var(--line);
+    display:flex; justify-content:space-between; align-items:center;
+    transition:color 0.2s;
+  }
+  .skill-list li:last-child { border-bottom:none; }
+  .skill-list li:hover { color:var(--ink); }
+  .skill-dot { width:5px; height:5px; border-radius:50%; background:var(--accent); opacity:0.6; }
+
+  /* ── PROJECTS ── */
+  #projects { padding-top:80px; }
+  .projects-header { display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:56px; }
+  .proj-list { display:flex; flex-direction:column; gap:2px; }
+  .proj-row {
+    display:grid; grid-template-columns:80px 1fr 220px 120px;
+    align-items:center; gap:32px;
+    padding:28px 32px;
+    border:1px solid var(--line);
+    background:rgba(26,24,20,0.02);
+    transition:background 0.3s, border-color 0.3s, transform 0.3s;
+    text-decoration:none; color:inherit;
+  }
+  .proj-row:hover {
+    background:var(--ink); color:var(--bg);
+    border-color:var(--ink);
+    transform:translateX(6px);
+  }
+  .proj-row:hover .proj-num,
+  .proj-row:hover .proj-stack,
+  .proj-row:hover .proj-arrow { color:rgba(245,242,238,0.5); }
+  .proj-row:hover .proj-title { color:var(--bg); }
+  .proj-num { font-size:0.65rem; letter-spacing:0.15em; color:var(--accent); font-weight:500; }
+  .proj-title { font-family:var(--serif); font-size:1.25rem; font-style:italic; }
+  .proj-stack { font-size:0.72rem; letter-spacing:0.06em; color:var(--muted); text-transform:uppercase; }
+  .proj-arrow { text-align:right; font-size:1.2rem; color:var(--muted); transition:transform 0.3s; }
+  .proj-row:hover .proj-arrow { transform:translateX(8px); }
+
+  /* ── CONTACT ── */
+  #contact { text-align:center; padding:140px 56px; }
+  .contact-pre { font-size:0.72rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--accent); margin-bottom:28px; }
+  .contact-title {
+    font-family:var(--serif); font-size:clamp(3rem,7vw,6.5rem);
+    font-weight:700; line-height:0.95; letter-spacing:-0.02em; margin-bottom:48px;
+  }
+  .contact-title em { font-style:italic; font-weight:400; }
+  .contact-email {
+    font-family:var(--serif); font-size:1.4rem; font-style:italic;
+    color:var(--accent); text-decoration:none;
+    border-bottom:1px solid var(--accent);
+    padding-bottom:4px; transition:opacity 0.2s;
+    display:inline-block; margin-bottom:56px;
+  }
+  .contact-email:hover { opacity:0.65; }
+  .socials { display:flex; justify-content:center; gap:32px; }
+  .social-link {
+    font-size:0.72rem; font-weight:500; letter-spacing:0.12em; text-transform:uppercase;
+    color:var(--muted); text-decoration:none; transition:color 0.2s;
+  }
+  .social-link:hover { color:var(--ink); }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top:1px solid var(--line);
+    padding:32px 56px;
+    display:flex; justify-content:space-between; align-items:center;
+    font-size:0.72rem; letter-spacing:0.05em; color:var(--muted);
+  }
+  footer a { color:var(--muted); text-decoration:none; transition:color 0.2s; }
+  footer a:hover { color:var(--ink); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity:0; transform:translateY(24px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+  @keyframes fadeIn {
+    to { opacity:1; }
+  }
+  @keyframes lineSlide {
+    from { top:0; }
+    to   { top:120px; }
+  }
+
+  .reveal {
+    opacity:0; transform:translateY(28px);
+    transition:opacity 0.8s, transform 0.8s;
+  }
+  .reveal.on { opacity:1; transform:translateY(0); }
+
+  @media (max-width:768px) {
+    nav { padding:24px; }
+    .nav-links { display:none; }
+    section { padding:80px 24px; }
+    #about { grid-template-columns:1fr; gap:40px; }
+    .skills-grid { grid-template-columns:1fr; }
+    .proj-row { grid-template-columns:1fr; gap:8px; padding:20px; }
+    .proj-arrow { display:none; }
+    footer { flex-direction:column; gap:12px; text-align:center; }
+    .hero-line { display:none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">GADRI<em>Maryam</em></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#projects">Work</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <p class="hero-eyebrow">Available for work · Based in Tunisia</p>
+  <h1 class="hero-name">GADRI<br><em>Maryam</em></h1>
+  <p class="hero-sub">
+    I design and build data-driven solutions clear, insightful, and crafted with attention to detail, usability, and impactful decision-making.
+  </p>
+  <div class="hero-actions">
+    <a href="#projects" class="btn-primary">See my work</a>
+    <a href="#contact" class="btn-ghost">Get in touch &rarr;</a>
+  </div>
+  <div class="hero-line"></div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-left reveal">
+    <p class="section-num">01 — About</p>
+    <h2 class="section-title">A bit<br>about <em>me</em></h2>
+  </div>
+  <div class="about-right reveal" style="transition-delay:0.15s">
+    <p>
+      I'm a <strong>Data Analyst</strong> passionate about transforming data into meaningful insights through <strong>Business Intelligence</strong>, data analysis, and interactive dashboards. I enjoy building solutions that are both efficient and visually clear, with a strong focus on analytics, reporting, and decision-making support.
+    </p>
+    <p>
+      Over the past <strong>2 years</strong>, during my last internship and my experience working in a startup environment, I contributed to data-driven projects focused on Business Intelligence, dashboard development, and analytics solutions. These experiences strengthened my ability to adapt quickly, collaborate within dynamic teams, and build clear and impactful solutions that support decision-making.
+    </p>
+    <div class="about-stats">
+      <div>
+        <div class="stat-val">1<em>+</em></div>
+        <div class="stat-key">Years exp.</div>
+      </div>
+      <div>
+        <div class="stat-val">5<em>+</em></div>
+        <div class="stat-key">Projects</div>
+      </div>
+      <div>
+        <div class="stat-val">2<em>+</em></div>
+        <div class="stat-key">Clients</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="skills-header reveal">
+    <div>
+      <p class="section-num" style="font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--accent);margin-bottom:12px">02 — Skills</p>
+      <h2 class="section-title">What I<br><em>work with</em></h2>
+    </div>
+  </div>
+  <div class="skills-grid">
+    <div class="skill-cell reveal" style="transition-delay:0.1s">
+      <div class="skill-cell-title">Operating system</div>
+      <ul class="skill-list">
+        <li>Windows <span class="skill-dot"></span></li>
+        <li>Linux <span class="skill-dot"></span></li>
+      </ul>
+    </div>
+    <div class="skill-cell reveal" style="transition-delay:0.2s">
+      <div class="skill-cell-title">Programming language</div>
+      <ul class="skill-list">
+        <li>Python <span class="skill-dot"></span></li>
+        <li>JavaScript <span class="skill-dot"></span></li>
+        <li>SQL <span class="skill-dot"></span></li>
+        <li>R <span class="skill-dot"></span></li>
+        <li>HTML/CSS <span class="skill-dot"></span></li>
+      </ul>
+    </div>
+    <div class="skill-cell reveal" style="transition-delay:0.3s">
+      <div class="skill-cell-title">Database management</div>
+      <ul class="skill-list">
+        <li>MySQL/ NoSQL <span class="skill-dot"></span></li>
+        <li>Talend <span class="skill-dot"></span></li>
+        <li>SQL Server Integration Services <span class="skill-dot"></span></li>
+        <li>Power BI <span class="skill-dot"></span></li>
+        <li>PostgreSQL <span class="skill-dot"></span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="skill-cell reveal" style="transition-delay:0.3s">
+      <div class="skill-cell-title">Other Tools</div>
+      <ul class="skill-list">
+        <li>Microsoft Office Tools <span class="skill-dot"></span></li>
+        <li>Git / GitHub <span class="skill-dot"></span></li>
+        <li>Angular <span class="skill-dot"></span></li>
+        <li>Springboot <span class="skill-dot"></span></li>
+        <li>DevOps Principales <span class="skill-dot"></span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="projects-header reveal">
+    <div>
+      <p class="section-num" style="font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--accent);margin-bottom:12px">03 — Work</p>
+      <h2 class="section-title">Selected<br><em>projects</em></h2>
+    </div>
+    <p style="color:var(--muted);font-size:0.85rem;max-width:220px;text-align:right;line-height:1.6">
+      A few things I've built recently.
+    </p>
+  </div>
+  <div class="proj-list"> 
+    <a href="Internal HR Management System.html" class="proj-row reveal" style="transition-delay:0.2s">
+      <span class="proj-num">01</span>
+      <span class="proj-title">Internal HR Management System</span>
+      <span class="proj-stack">Excel · Power BI</span>
+      <span class="proj-arrow">&rarr;</span>
+    </a>
+    <a href="HR-Intelligence-Platform.html" class="proj-row reveal" style="transition-delay:0.1s">
+      <span class="proj-num">02</span>
+      <span class="proj-title">HR Intelligence Platform</span>
+      <span class="proj-stack">Talend · Power BI · Python · Spring Boot · Angular</span>
+      <span class="proj-arrow">&rarr;</span>
+    </a>
+    <a href="Supplier-Expense-Analytics.html" class="proj-row reveal" style="transition-delay:0.4s">
+    <span class="proj-num">03</span>
+    <span class="proj-title">Supplier Expense Analytics</span>
+    <span class="proj-stack">Excel · Power BI</span>
+    <span class="proj-arrow">&rarr;</span>
+    </a>
+    <a href="SmartSpend.html" class="proj-row reveal" style="transition-delay:0.3s">
+      <span class="proj-num">04</span>
+      <span class="proj-title">SmartSpend</span>
+      <span class="proj-stack">Excel · Power BI · Python</span>
+      <span class="proj-arrow">&rarr;</span>
+    </a>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <p class="contact-pre reveal">04 — Contact</p>
+  <h2 class="contact-title reveal" style="transition-delay:0.1s">
+    Let's work<br><em>together</em>
+  </h2>
+  <div class="reveal" style="transition-delay:0.2s">
+    <a href="mailto:meriem.gadri18@gmail.com" class="contact-email">meriem.gadri18@gmail.com</a>
+  </div>
+  <div class="reveal" style="transition-delay:0.25s">
+    <a href="tel:+21624213944" class="contact-email" style="font-size:1.2rem;">+216 24 213 944</a>
+  </div>
+  <div class="socials reveal" style="transition-delay:0.3s">
+  <a href="https://www.linkedin.com/in/meriem-gadri-ab1262280/" 
+     class="social-link" 
+     target="_blank">
+     LinkedIn
+  </a>
+</div>
+</section>
+
+<footer>
+  <span>© 2026 GADRI Maryam</span>
+  <span>Designed & built with care</span>
+</footer>
+
+<script>
+  // Scroll reveal
+  const els = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('on'); });
+  }, { threshold: 0.12 });
+  els.forEach(el => io.observe(el));
+</script>
+</body>
+</html>
